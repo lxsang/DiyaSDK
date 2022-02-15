@@ -1,0 +1,2 @@
+FFIMethodRegistry resetAll.
+Smalltalk garbageCollect
