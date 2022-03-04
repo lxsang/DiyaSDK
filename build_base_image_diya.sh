@@ -9,6 +9,7 @@ rm "$BASE_DIR/tmp" -rf
 mkdir -p "$BASE_DIR/tmp/"
 cp $BASE_DIR/bootstrap/bootstrap.image $BASE_DIR/tmp/diya.image
 cp $W/unicode/* $BASE_DIR/tmp/ 
+cp -rf $W/fonts $BASE_DIR/tmp/ 
 VM=$BASE_DIR/builder/pharo
 IMG=$BASE_DIR/tmp/diya.image
 SRC_IMG=$BASE_DIR/builder/Pharo.image
@@ -19,6 +20,7 @@ if [ ! -e "$SRC_IMG" ]; then
     curl https://get.pharo.org/$ARCH/70+vm | bash
     cd $W
 fi
+cp -rf $W/fonts $BASE_DIR/builder/ 
 
 $VM $SRC_IMG $W/install.st --quit
 NAME="Diya-Bootstrap"

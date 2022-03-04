@@ -110,7 +110,8 @@ pkg := RPackageOrganizer default packageNamed: 'FreeType' asSymbol.
 core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:ChunkWriteStream);
 	addClass: (HEClass for:ChunkReadStream);
-	addClass: (HEClass for:STCommandLineHandler)
+	addClass: (HEClass for:STCommandLineHandler);
+	addClass: (HEClass for:FreeTypeFace)
 	.
 
 fileReference := (dest,'/',(pkgn replaceAll: Character space with: $-),'.hermes') asFileReference.

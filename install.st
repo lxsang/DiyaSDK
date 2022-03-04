@@ -21,5 +21,6 @@ DiyaBoot ifNil:[
 ].
 
 change ifTrue:[
+	FTSizeRec rebuildFieldAccessors.
 	Smalltalk snapshot: true andQuit: true.
 ].
