@@ -45,6 +45,7 @@ packages := #(
 	'Slot-Core' 
 	'System-Localization' 
 	'STON-Core'
+	'Colors'
 	'Diya'
 	"
 	'Graphics-Primitives'
