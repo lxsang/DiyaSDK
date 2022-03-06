@@ -46,21 +46,8 @@ packages := #(
 	'System-Localization' 
 	'STON-Core'
 	'Colors'
-	'Diya'
-	"
-	'Graphics-Primitives'
-	'Graphics-Transformations'
-	'Graphics-Canvas'
-	'FreeType'
-	'Graphics-Display Objects'
-	'EmbeddedFreeType'
-	'Text-Scanning'
-	'Multilingual-OtherLanguages'
-	'Multilingual-TextConverterOtherLanguages'
-	'Graphics-Fonts'
-	'System-FileRegistry'
 	'Graphics-Files'
-	'Graphics-Shapes'"
+	'Diya'
 ).
 
 ignoresClasses := {
@@ -73,8 +60,18 @@ ignoresClasses := {
 	StringMorph.
 	AthensCairoSDLSurface.
 	SourceFileArray.
-	GlyphForm
+	GlyphForm.
 }.
+"remove some unused meothods"
+Form class 
+		removeSelector: #serviceOpenImageInWindow;
+		removeSelector: #openImageInWindow:;
+		removeSelector: #serviceImageAsBackground;
+		removeSelector: #setBackgroundFromImageFileNamed:;
+		removeSelector: #services.
+Form
+	removeSelector: #setAsBackground;
+	removeSelector: #scaledByDisplayScaleFactor.
 
 packages do:[:name | |pkg trait classes extensionMethods|
 	Transcript show: 'Processing package ',name;cr.
@@ -99,7 +96,6 @@ pkg := RPackageOrganizer default packageNamed: 'OSWindow-SDL2' asSymbol.
 	core addClass:(HEClass for:e asClass) ]].
 
 "FreeType binding class"
-
 pkg := RPackageOrganizer default packageNamed: 'FreeType' asSymbol.
 (pkg classNamesForClassTag: 'Base') do:[:e|
 	(ignoresClasses includes:e asClass) ifFalse:[
@@ -107,12 +103,23 @@ pkg := RPackageOrganizer default packageNamed: 'FreeType' asSymbol.
 (pkg classNamesForClassTag: 'Bindings') do:[:e|
 	(ignoresClasses includes:e asClass) ifFalse:[
 	core addClass:(HEClass for:e asClass) ]].
+
 "fixing some missing classes"
 core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:ChunkWriteStream);
 	addClass: (HEClass for:ChunkReadStream);
 	addClass: (HEClass for:STCommandLineHandler);
-	addClass: (HEClass for:FreeTypeFace)
+	addClass: (HEClass for:FreeTypeFace);
+	"form object support"
+	addClass: (HEClass for:DisplayObject);
+	addClass: (HEClass for:DisplayMedium);
+	addClass: (HEClass for:Form);
+	addClass: (HEClass for:ColorForm);
+	addClass: (HEClass for:Bitmap);
+	addClass: (HEClass for:BitBlt);
+	addClass: (HEClass for:ColorArray);
+	addClass: (HEClass for: AnimatedImageFrame);
+	addClass: (HEClass for: WarpBlt)
 	.
 
 fileReference := (dest,'/',(pkgn replaceAll: Character space with: $-),'.hermes') asFileReference.
