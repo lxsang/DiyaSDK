@@ -1,0 +1,97 @@
+#! /bin/bash
+set -e
+
+W=$(dirname "$(realpath "$0")")
+
+diya_help() {
+    cat << EOF
+    Usage: diya <option> [param]
+    
+    Options:
+        -b|--build <32|64> build 32 or 64 bits image
+        -s|--sdk <32|64> run 32 or 64 bits SDK
+        -c|--clean <32|64> cleanup 23 or 64 bits outputs
+        -r|--run <32|64> run the generated 32 or 64 bit
+        -h|--help this help
+    Examples:
+        diya -b 64
+        diya -s 64
+EOF
+}
+
+check_arch()
+{
+    ARCH=$1
+    if [ "$ARCH" != "64" ] && [ "$ARCH" != "32" ];then
+        echo "Invalid Architecture: $ARCH. Should be 32 or 64"
+        diya_help
+        exit 1
+    fi
+}
+
+build()
+{
+    ARCH=$1
+    check_arch "$ARCH"
+    "$W/build_base_image_diya.sh" "$ARCH"
+}
+
+sdk()
+{
+    ARCH=$1
+    check_arch  "$ARCH"
+    if [ ! -e  "$W/../$ARCH/builder/pharo-ui" ]; then
+        build "$ARCH"
+        [ ! -e  "$W/../$ARCH/builder/pharo-ui" ] && echo "Unable to init SDK" && exit 1
+    fi
+    "$W/../$ARCH/builder/pharo-ui" "$W/../$ARCH/builder/Pharo.image"
+}
+
+run()
+{
+    ARCH=$1
+    check_arch  "$ARCH"
+    if [ ! -e  "$W/../$ARCH/builder/pharo" ]; then
+        build "$ARCH"
+        [ ! -e  "$W/../$ARCH/builder/pharo" ] && echo "Unable to build image" && exit 1
+    fi
+    "$W/../$ARCH/builder/pharo" "$W/../$ARCH/tmp/diya.image"
+}
+
+clean() {
+    ARCH=$1
+    check_arch  "$ARCH"
+    rm -rf "$W/../$ARCH/builder"
+    rm -rf "$W/../$ARCH/tmp"
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -b|--build)
+        build "$2"
+        exit 0
+        ;;
+    -s|--sdk)
+        sdk "$2"
+        exit 0
+        ;;
+    -h|--help)
+        diya_help
+        exit 1
+        ;;
+    -c|--clean)
+        clean "$2"
+        exit 0
+        ;;
+    -r|--run)
+        run "$2"
+        exit 0
+        ;;
+    *)
+        diya_help
+        exit 1
+        ;;
+  esac
+done
+
+diya_help
