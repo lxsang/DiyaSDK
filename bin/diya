@@ -44,7 +44,7 @@ sdk()
         build "$ARCH"
         [ ! -e  "$W/../$ARCH/builder/pharo-ui" ] && echo "Unable to init SDK" && exit 1
     fi
-    "$W/../$ARCH/builder/pharo-ui" "$W/../$ARCH/builder/Pharo.image"
+    "$W/../$ARCH/builder/pharo-ui" "$W/../$ARCH/builder/Pharo.image" &
 }
 
 run()

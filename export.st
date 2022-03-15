@@ -46,6 +46,7 @@ packages := #(
 	'System-Localization' 
 	'STON-Core'
 	'Colors'
+	'Graphics-Primitives'
 	'Graphics-Files'
 	'Diya'
 ).
@@ -61,6 +62,9 @@ ignoresClasses := {
 	AthensCairoSDLSurface.
 	SourceFileArray.
 	GlyphForm.
+	ManifestGraphicsPrimitives.
+	EllipseMidpointTracer.
+	GrafPort
 }.
 "remove some unused meothods"
 Form class 
@@ -79,7 +83,7 @@ packages do:[:name | |pkg trait classes extensionMethods|
 	pkg := RPackageOrganizer default packageNamed: name asSymbol.
 	traits := (pkg definedClasses select: #isTrait) do: [ :e | core traits add:(HETrait for: e) ].
 	(pkg definedClasses reject: #isTrait) do: [ :e |
-		(ignoresClasses includes:e superclass) ifFalse:[
+		(ignoresClasses includes:e) ifFalse:[
 			core addClass: (HEClass for: e) ].
 		].
 	pkg extensionMethods do: [ :e | 
@@ -115,11 +119,8 @@ core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:DisplayMedium);
 	addClass: (HEClass for:Form);
 	addClass: (HEClass for:ColorForm);
-	addClass: (HEClass for:Bitmap);
-	addClass: (HEClass for:BitBlt);
 	addClass: (HEClass for:ColorArray);
-	addClass: (HEClass for: AnimatedImageFrame);
-	addClass: (HEClass for: WarpBlt)
+	addClass: (HEClass for: AnimatedImageFrame)
 	.
 
 fileReference := (dest,'/',(pkgn replaceAll: Character space with: $-),'.hermes') asFileReference.
