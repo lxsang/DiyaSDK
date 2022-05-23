@@ -55,6 +55,7 @@ run()
         build "$ARCH"
         [ ! -e  "$W/../$ARCH/builder/pharo" ] && echo "Unable to build image" && exit 1
     fi
+    [ -z "$DIYA_RES" ] && export  DIYA_RES="480x640"
     "$W/../$ARCH/builder/pharo" "$W/../$ARCH/tmp/diya.image"
 }
 
