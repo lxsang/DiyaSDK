@@ -32,7 +32,7 @@ pipeline{
         set -e
         export WORKSPACE=$(realpath "./jenkins/workspace/Diya-image")
         cd $WORKSPACE
-        source ./env.sh
+        source ./env.sh || true
         diya -c 32
         diya -c 64
         diya -b 32
