@@ -1,11 +1,3 @@
-def remote = [:]
-remote.name = 'workstation'
-remote.host = 'workstation'
-remote.user = 'dany'
-remote.identityFile = '/var/jenkins_home/.ssh/id_rsa'
-remote.allowAnyHosts = true
-remote.agent = false
-remote.logLevel = 'INFO'
 pipeline{
   agent { node{ label'master' }}
   options {
@@ -18,7 +10,7 @@ pipeline{
     // Enable timestamps in build log console
     timestamps()
     // Maximum time to run the whole pipeline before canceling it
-    timeout(time: 1, unit: 'HOURS')
+    timeout(time: 10, unit: 'HOURS')
     // Use Jenkins ANSI Color Plugin for log console
     ansiColor('xterm')
     // Limit build concurrency to 1 per branch
@@ -26,18 +18,30 @@ pipeline{
   }
   stages
   {
-    stage('Build diya image') {
+    stage('Build image') {
+      agent {
+          docker {
+              image 'xsangle/ci-yocto:focal'
+              // args '-v /var/jenkins_home/workspace/ant-http:/var/jenkins_home/workspace/ant-http'
+              reuseNode true
+          }
+      }
       steps {
-        sshCommand remote: remote, command: '''
-        set -e
-        export WORKSPACE=$(realpath "./jenkins/workspace/Diya-image")
-        cd $WORKSPACE
-        source ./env.sh || true
+        sh '''#!/bin/bash
+        printenv
+        source ./env.sh
         diya -c 32
         diya -c 64
         diya -b 32
         diya -b 64
-        '''
+       '''
+      }
+    }
+    stage('Archive') {
+      steps {
+        script {
+            //archiveArtifacts artifacts: 'build/tmp/deploy/images/', fingerprint: true
+        }
       }
     }
   }
