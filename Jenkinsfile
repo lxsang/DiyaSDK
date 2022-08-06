@@ -39,9 +39,12 @@ pipeline{
     }
     stage('Archive') {
       steps {
-        script {
+        //script {
             //archiveArtifacts artifacts: 'build/tmp/deploy/images/', fingerprint: true
-        }
+        //}
+        sh '''
+        echo "DONE"
+        '''
       }
     }
   }
