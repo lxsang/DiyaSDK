@@ -3,7 +3,7 @@ change := false.
 HEBinaryReaderWriter ifNil:[
 	[
 		Metacello new
-		repository: 'github://tesonep/hermes';
+		repository: 'github://lxsang/hermes';
 		baseline:'Hermes';
 		load
 	] on: Warning do: #resume.
