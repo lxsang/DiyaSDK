@@ -22,7 +22,8 @@ if [ ! -e "$SRC_IMG" ]; then
     cd "$W"
 fi
 cp -rf "$W/fonts" "$BASE_DIR/builder/" 
-
+chmod  -R a+rw $BASE_DIR/builder/
+chmod  -R a+rw $BASE_DIR/tmp/
 $VM "$SRC_IMG" "$W/install.st" --quit
 NAME="Diya-Bootstrap"
 $VM "$SRC_IMG" "$W/export.st" "$BASE_DIR/tmp" "$NAME" --quit
