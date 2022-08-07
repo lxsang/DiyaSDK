@@ -22,7 +22,7 @@ pipeline{
       agent {
           docker {
               image 'xsangle/ci-yocto:focal'
-              args ' --user root '
+              //args ' --user root '
               // args '-v /var/jenkins_home/workspace/ant-http:/var/jenkins_home/workspace/ant-http'
               reuseNode true
           }
@@ -40,7 +40,7 @@ pipeline{
       agent {
           docker {
               image 'xsangle/ci-yocto:focal'
-              args ' --user root '
+              //args ' --user root '
               // args '-v /var/jenkins_home/workspace/ant-http:/var/jenkins_home/workspace/ant-http'
               reuseNode true
           }
