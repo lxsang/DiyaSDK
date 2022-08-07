@@ -24,7 +24,7 @@ fi
 cp -rf "$W/fonts" "$BASE_DIR/builder/" 
 chmod  -R a+rw $BASE_DIR/builder/
 chmod  -R a+rw $BASE_DIR/tmp/
-$VM "$SRC_IMG" "$W/install.st" --quit --no-default-preferences
+$VM "$SRC_IMG" "$W/install.st" --quit
 NAME="Diya-Bootstrap"
 $VM "$SRC_IMG" "$W/export.st" "$BASE_DIR/tmp" "$NAME" --quit
 echo "Creating image...."
@@ -33,7 +33,7 @@ $VM "$IMG"
 $VM "$IMG" loadHermes "$BASE_DIR/bootstrap/Hermes-Extensions.hermes" \
         "$BASE_DIR/bootstrap/TraitsV2.hermes" \
         "$BASE_DIR/tmp/$NAME.hermes" --on-duplication=ignore \
-        --no-fail-on-undeclared --save --quit --no-default-preferences
+        --no-fail-on-undeclared --save --quit
 
 #init the image
 $VM "$IMG" init --save
