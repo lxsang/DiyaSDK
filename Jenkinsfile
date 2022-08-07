@@ -18,7 +18,7 @@ pipeline{
   }
   stages
   {
-    stage('Build image') {
+    stage('Build 32 bit image') {
       agent {
           docker {
               image 'xsangle/ci-yocto:focal'
@@ -32,20 +32,33 @@ pipeline{
         printenv
         source ./env.sh
         diya -c 32
-        diya -c 64
         diya -b 32
+       '''
+      }
+    }
+    stage('Build 64 bit image') {
+      agent {
+          docker {
+              image 'xsangle/ci-yocto:focal'
+              args ' --user root '
+              // args '-v /var/jenkins_home/workspace/ant-http:/var/jenkins_home/workspace/ant-http'
+              reuseNode true
+          }
+      }
+      steps {
+        sh '''#!/bin/bash
+        printenv
+        source ./env.sh
+        diya -c 64
         diya -b 64
        '''
       }
     }
     stage('Archive') {
       steps {
-        //script {
-            //archiveArtifacts artifacts: 'build/tmp/deploy/images/', fingerprint: true
-        //}
-        sh '''
-        echo "DONE"
-        '''
+        script {
+          archiveArtifacts artifacts: '64/tmp/diya.image,32/tmp/diya.image,fonts/', fingerprint: true
+        }
       }
     }
   }
