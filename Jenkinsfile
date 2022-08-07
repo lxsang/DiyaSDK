@@ -29,6 +29,7 @@ pipeline{
       }
       steps {
         sh '''#!/bin/bash
+        export HOME=/var/jenkins_home/workspace/Diya-image
         printenv
         source ./env.sh
         diya -c 32
@@ -47,6 +48,7 @@ pipeline{
       }
       steps {
         sh '''#!/bin/bash
+        export HOME=/var/jenkins_home/workspace/Diya-image
         printenv
         source ./env.sh
         diya -c 64
