@@ -1,5 +1,6 @@
 #! /bin/bash
 set -e
+set -x
 [ -z "$1" ] && echo "Please specify 32 or 64 bits architectuure" && exit 1
 echo "[Compiler] Adding more Kernel packages"
 ARCH="$1"
