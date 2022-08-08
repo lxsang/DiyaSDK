@@ -31,7 +31,7 @@ echo "Creating image...."
 $VM "$IMG"
 $VM "$IMG" loadHermes "$BASE_DIR/bootstrap/Hermes-Extensions.hermes" \
         "$BASE_DIR/bootstrap/TraitsV2.hermes" \
-        "$BASE_DIR/tmp/$NAME.hermes" --on-duplication=ignore \
+        "$BASE_DIR/tmp/$NAME.hermes" --on-duplication=replace \
         --no-fail-on-undeclared --save --quit
 
 #init the image

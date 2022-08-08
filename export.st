@@ -1,5 +1,6 @@
 |pkgn dest pkg fileReference fileName writer core hePackage ignoresClasses|
 FFIMethodRegistry resetAll.
+Smalltalk garbageCollect.
 dest := Smalltalk arguments first.
 pkgn :=  Smalltalk arguments at:2.
 
@@ -14,6 +15,7 @@ packages := #(
 	'Jobs' 
 	'Collections-Arithmetic'
 	'Ring-Deprecated-Core-Kernel'
+	'Ring-Deprecated-Core-Containers'
 	'Math-Operations-Extensions'
 	'Collections-Atomic' 
 	'Collections-DoubleLinkedList' 
@@ -52,8 +54,8 @@ packages := #(
 ).
 
 ignoresClasses := {
-	RGCommentDefinition.
-	RGMethodDefinition.
+	"RGCommentDefinition.
+	RGMethodDefinition."
 	ChangeRecord.
 	PluggableListMorph.
 	TextLine.
@@ -75,11 +77,37 @@ Form class
 		removeSelector: #services.
 Form
 	removeSelector: #setAsBackground;
-	removeSelector: #scaledByDisplayScaleFactor.
+	compile: 'scaledByDisplayScaleFactor
+	'.
+AbstractFileReference
+	removeSelector: #fileIn.
+FileStream
+	removeSelector: #fileIn.
+GZipReadStream class
+	removeSelector: #fileIn:.
+STCommandLineHandler
+	removeSelector: #installSourceFile:;
+	compile: 'installSourceFiles
+	';
+	removeSelector: #loadSourceFiles:;
+	compile: 'selectSourceFiles
+	'.
+PharoCommandLineHandler
+	compile: 'changePreferences
+	';
+	compile: 'runPreferences
+	'.
+
+GIFReadWriter class
+	removeSelector: #exampleAnim.
+Rectangle class
+	removeSelector: #fromUser:;
+	removeSelector: #fromUser.
 
 packages do:[:name | |pkg trait classes extensionMethods|
 	Transcript show: 'Processing package ',name;cr.
 	FFIMethodRegistry resetAll.
+	Smalltalk garbageCollect.
 	pkg := RPackageOrganizer default packageNamed: name asSymbol.
 	traits := (pkg definedClasses select: #isTrait) do: [ :e | core traits add:(HETrait for: e) ].
 	(pkg definedClasses reject: #isTrait) do: [ :e |
@@ -112,6 +140,7 @@ pkg := RPackageOrganizer default packageNamed: 'FreeType' asSymbol.
 core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:ChunkWriteStream);
 	addClass: (HEClass for:ChunkReadStream);
+	addClass: (HEClass for: PharoCommandLineHandler);
 	addClass: (HEClass for:STCommandLineHandler);
 	addClass: (HEClass for:FreeTypeFace);
 	"form object support"
@@ -120,7 +149,8 @@ core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:Form);
 	addClass: (HEClass for:ColorForm);
 	addClass: (HEClass for:ColorArray);
-	addClass: (HEClass for: AnimatedImageFrame)
+	addClass: (HEClass for: AnimatedImageFrame);
+	addClass: (HEClass for: ShortIntegerArray)
 	.
 
 fileReference := (dest,'/',(pkgn replaceAll: Character space with: $-),'.hermes') asFileReference.
