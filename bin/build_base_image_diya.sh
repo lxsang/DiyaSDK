@@ -20,6 +20,7 @@ if [ ! -e "$SRC_IMG" ]; then
     cd "$BASE_DIR/builder/"
     curl "https://get.pharo.org/$ARCH/70+vm" | bash
     cd "$W"
+    find . -name "*SDL*.so*" -exec  rm -f {} \;
 fi
 cp -rf "$W/fonts" "$BASE_DIR/builder/" 
 # chmod  -R a+rw $BASE_DIR

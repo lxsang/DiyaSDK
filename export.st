@@ -48,8 +48,6 @@ packages := #(
 	'System-Localization' 
 	'STON-Core'
 	'Colors'
-	'Graphics-Primitives'
-	'Graphics-Files'
 	'Diya'
 ).
 
@@ -66,19 +64,10 @@ ignoresClasses := {
 	GlyphForm.
 	ManifestGraphicsPrimitives.
 	EllipseMidpointTracer.
-	GrafPort
+	GrafPort.
+	Form
 }.
 "remove some unused meothods"
-Form class 
-		removeSelector: #serviceOpenImageInWindow;
-		removeSelector: #openImageInWindow:;
-		removeSelector: #serviceImageAsBackground;
-		removeSelector: #setBackgroundFromImageFileNamed:;
-		removeSelector: #services.
-Form
-	removeSelector: #setAsBackground;
-	compile: 'scaledByDisplayScaleFactor
-	'.
 AbstractFileReference
 	removeSelector: #fileIn.
 FileStream
@@ -98,8 +87,6 @@ PharoCommandLineHandler
 	compile: 'runPreferences
 	'.
 
-GIFReadWriter class
-	removeSelector: #exampleAnim.
 Rectangle class
 	removeSelector: #fromUser:;
 	removeSelector: #fromUser.
@@ -144,12 +131,6 @@ core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:STCommandLineHandler);
 	addClass: (HEClass for:FreeTypeFace);
 	"form object support"
-	addClass: (HEClass for:DisplayObject);
-	addClass: (HEClass for:DisplayMedium);
-	addClass: (HEClass for:Form);
-	addClass: (HEClass for:ColorForm);
-	addClass: (HEClass for:ColorArray);
-	addClass: (HEClass for: AnimatedImageFrame);
 	addClass: (HEClass for: ShortIntegerArray)
 	.
 
