@@ -91,6 +91,8 @@ Rectangle class
 	removeSelector: #fromUser:;
 	removeSelector: #fromUser.
 
+CompositeTransform removeSelector:#asMorphicTransform.
+
 packages do:[:name | |pkg trait classes extensionMethods|
 	Transcript show: 'Processing package ',name;cr.
 	FFIMethodRegistry resetAll.
@@ -131,7 +133,10 @@ core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:STCommandLineHandler);
 	addClass: (HEClass for:FreeTypeFace);
 	"form object support"
-	addClass: (HEClass for: ShortIntegerArray)
+	addClass: (HEClass for: ShortIntegerArray);
+	addClass: (HEClass for:DisplayTransform);
+	addClass: (HEClass for:MatrixTransform2x3);
+	addClass: (HEClass for:CompositeTransform)
 	.
 
 fileReference := (dest,'/',(pkgn replaceAll: Character space with: $-),'.hermes') asFileReference.
