@@ -48,6 +48,8 @@ packages := #(
 	'System-Localization' 
 	'STON-Core'
 	'Colors'
+	'Graphics-Primitives'
+	'Graphics-Files'
 	'Diya'
 ).
 
@@ -65,7 +67,6 @@ ignoresClasses := {
 	ManifestGraphicsPrimitives.
 	EllipseMidpointTracer.
 	GrafPort.
-	Form
 }.
 "remove some unused meothods"
 AbstractFileReference
@@ -92,6 +93,20 @@ Rectangle class
 	removeSelector: #fromUser.
 
 CompositeTransform removeSelector:#asMorphicTransform.
+
+	Form class 
+		removeSelector: #serviceOpenImageInWindow;
+		removeSelector: #openImageInWindow:;
+		removeSelector: #serviceImageAsBackground;
+		removeSelector: #setBackgroundFromImageFileNamed:;
+		removeSelector: #services.
+Form
+	removeSelector: #setAsBackground;
+	compile: 'scaledByDisplayScaleFactor
+	'.
+
+	GIFReadWriter class
+	removeSelector: #exampleAnim.
 
 packages do:[:name | |pkg trait classes extensionMethods|
 	Transcript show: 'Processing package ',name;cr.
@@ -133,6 +148,13 @@ core addClass: (HEClass for:OSWindowPlatformSpecificHandle);
 	addClass: (HEClass for:STCommandLineHandler);
 	addClass: (HEClass for:FreeTypeFace);
 	"form object support"
+	addClass: (HEClass for:DisplayObject);
+	addClass: (HEClass for:DisplayMedium);
+	addClass: (HEClass for:Form);
+	addClass: (HEClass for:ColorForm);
+	addClass: (HEClass for:ColorArray);
+	addClass: (HEClass for: AnimatedImageFrame);
+
 	addClass: (HEClass for: ShortIntegerArray);
 	addClass: (HEClass for:DisplayTransform);
 	addClass: (HEClass for:MatrixTransform2x3);
